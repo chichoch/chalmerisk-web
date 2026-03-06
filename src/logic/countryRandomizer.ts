@@ -1,6 +1,9 @@
 import type { Country } from '../types';
 
-export function randomizeCountries(numPlayers: number, countries: Country[]): Country[] {
+export function randomizeCountries(
+  numPlayers: number,
+  countries: Country[],
+): Country[] {
   // Shuffle using Fisher-Yates
   const shuffled = [...countries];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -10,7 +13,7 @@ export function randomizeCountries(numPlayers: number, countries: Country[]): Co
 
   // Assign players round-robin starting from a random player
   let playerIndex = Math.floor(Math.random() * numPlayers);
-  return shuffled.map(country => {
+  return shuffled.map((country) => {
     const assigned = { ...country, ownerIndex: playerIndex };
     playerIndex = (playerIndex + 1) % numPlayers;
     return assigned;

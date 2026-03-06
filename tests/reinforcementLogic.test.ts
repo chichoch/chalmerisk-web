@@ -37,7 +37,9 @@ describe('reinforcementLogic', () => {
   describe('calculateReinforcements', () => {
     it('gives country-based + continent bonus when player owns all countries', () => {
       // Player 0 owns all 15 countries across 3 continents of value 5
-      const countries = Array.from({ length: 15 }, (_, i) => makeCountry(i + 1, 0));
+      const countries = Array.from({ length: 15 }, (_, i) =>
+        makeCountry(i + 1, 0),
+      );
       const continents: Continent[] = [
         { name: 'Cont1', value: 5, countryIds: [1, 2, 3, 4, 5] },
         { name: 'Cont2', value: 5, countryIds: [6, 7, 8, 9, 10] },

@@ -8,5 +8,11 @@ export function DiceView({ value, visible }: Props) {
     ? `/resources/testdice${value}.gif`
     : '/resources/testdicetom.gif';
 
-  return <img src={src} alt={visible ? `Dice: ${value}` : 'Not rolled'} style={{ width: 50, height: 50 }} />;
+  return (
+    <img
+      src={src}
+      alt={visible ? `Dice: ${value}` : 'Not rolled'}
+      style={{ width: 50, height: 50 }}
+    />
+  );
 }

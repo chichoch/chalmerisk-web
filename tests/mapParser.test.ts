@@ -58,12 +58,12 @@ describe('mapParser', () => {
 
   it('parses country names correctly', () => {
     const result = parseMapFromText(TEST_MAP);
-    expect(result.countries.find(c => c.id === 1)?.name).toBe('test1');
+    expect(result.countries.find((c) => c.id === 1)?.name).toBe('test1');
   });
 
   it('parses country neighbours correctly', () => {
     const result = parseMapFromText(TEST_MAP);
-    const c1 = result.countries.find(c => c.id === 1);
+    const c1 = result.countries.find((c) => c.id === 1);
     expect(c1?.neighbours).toEqual([1, 2, 3, 10]);
   });
 

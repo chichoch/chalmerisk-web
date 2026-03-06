@@ -4,9 +4,9 @@ import { TurnPhase } from '../../types';
 import { getIconPath } from '../../utils/iconResolver';
 
 export function ReinforcementCursor() {
-  const turnPhase = useGameStore(s => s.turnPhase);
-  const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
-  const players = useGameStore(s => s.players);
+  const turnPhase = useGameStore((s) => s.turnPhase);
+  const currentPlayerIndex = useGameStore((s) => s.currentPlayerIndex);
+  const players = useGameStore((s) => s.players);
   const { x, y } = useMousePosition();
 
   const player = players[currentPlayerIndex];
@@ -32,7 +32,14 @@ export function ReinforcementCursor() {
       }}
     >
       <img src={iconPath} alt="" />
-      <span style={{ color: '#fff', fontSize: 12, fontWeight: 'bold', textShadow: '1px 1px 2px #000' }}>
+      <span
+        style={{
+          color: '#fff',
+          fontSize: 12,
+          fontWeight: 'bold',
+          textShadow: '1px 1px 2px #000',
+        }}
+      >
         {player.reinforcements}
       </span>
     </div>

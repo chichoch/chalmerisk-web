@@ -9,15 +9,21 @@ export interface ValidationResult {
 export function validateAttacker(
   countryId: number,
   currentPlayerIndex: number,
-  countries: Country[]
+  countries: Country[],
 ): ValidationResult {
-  const country = countries.find(c => c.id === countryId);
+  const country = countries.find((c) => c.id === countryId);
   if (!country) return { valid: false, message: 'Country not found' };
   if (country.ownerIndex !== currentPlayerIndex) {
-    return { valid: false, message: 'You have to attack from one of your own countries!' };
+    return {
+      valid: false,
+      message: 'You have to attack from one of your own countries!',
+    };
   }
   if (country.troops <= 1) {
-    return { valid: false, message: 'You have too few troops to attack from this country!' };
+    return {
+      valid: false,
+      message: 'You have too few troops to attack from this country!',
+    };
   }
   return { valid: true };
 }
@@ -25,15 +31,18 @@ export function validateAttacker(
 export function validateDefender(
   attackerCountry: Country,
   defenderCountryId: number,
-  countries: Country[]
+  countries: Country[],
 ): ValidationResult {
-  const defender = countries.find(c => c.id === defenderCountryId);
+  const defender = countries.find((c) => c.id === defenderCountryId);
   if (!defender) return { valid: false, message: 'Country not found' };
   if (defender.ownerIndex === attackerCountry.ownerIndex) {
     return { valid: false, message: "You can't attack your own country!" };
   }
   if (!attackerCountry.neighbours.includes(defenderCountryId)) {
-    return { valid: false, message: 'You have to attack a neighbouring country!' };
+    return {
+      valid: false,
+      message: 'You have to attack a neighbouring country!',
+    };
   }
   return { valid: true };
 }
@@ -41,7 +50,7 @@ export function validateDefender(
 export function applyBattleOutcome(
   outcome: BattleOutcome,
   attacker: Country,
-  defender: Country
+  defender: Country,
 ): { attacker: Country; defender: Country } {
   let attTroops = attacker.troops;
   let defTroops = defender.troops;
@@ -73,7 +82,7 @@ export function applyBattleOutcome(
 
 export function applyTakeover(
   attacker: Country,
-  defender: Country
+  defender: Country,
 ): { attacker: Country; defender: Country } {
   return {
     attacker: { ...attacker, troops: attacker.troops - 1 },

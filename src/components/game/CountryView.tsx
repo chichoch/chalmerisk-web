@@ -6,16 +6,22 @@ interface Props {
 }
 
 export function CountryView({ countryId }: Props) {
-  const country = useGameStore(s => s.countries.find(c => c.id === countryId));
-  const players = useGameStore(s => s.players);
-  const clickCountry = useGameStore(s => s.clickCountry);
+  const country = useGameStore((s) =>
+    s.countries.find((c) => c.id === countryId),
+  );
+  const players = useGameStore((s) => s.players);
+  const clickCountry = useGameStore((s) => s.clickCountry);
 
   if (!country) return null;
 
   const player = players[country.ownerIndex];
   if (!player) return null;
 
-  const iconPath = getIconPath(player.color, country.troops, country.isSelected);
+  const iconPath = getIconPath(
+    player.color,
+    country.troops,
+    country.isSelected,
+  );
 
   return (
     <div
@@ -34,7 +40,14 @@ export function CountryView({ countryId }: Props) {
       }}
     >
       <img src={iconPath} alt={country.name} draggable={false} />
-      <span style={{ color: '#fff', fontSize: 12, fontWeight: 'bold', textShadow: '1px 1px 2px #000' }}>
+      <span
+        style={{
+          color: '#fff',
+          fontSize: 12,
+          fontWeight: 'bold',
+          textShadow: '1px 1px 2px #000',
+        }}
+      >
         {country.troops}
       </span>
     </div>

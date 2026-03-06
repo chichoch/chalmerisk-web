@@ -7,7 +7,12 @@ import {
 } from '../src/logic/attackLogic';
 import { BattleOutcome, Country } from '../src/types';
 
-function makeCountry(id: number, ownerIndex: number, troops: number, neighbours: number[] = []): Country {
+function makeCountry(
+  id: number,
+  ownerIndex: number,
+  troops: number,
+  neighbours: number[] = [],
+): Country {
   return {
     id,
     name: `Country${id}`,
@@ -73,7 +78,11 @@ describe('attackLogic', () => {
     it('removes 1 defender troop for DEFENDER_KILLED_1', () => {
       const att = makeCountry(1, 0, 5);
       const def = makeCountry(2, 1, 3);
-      const { attacker, defender } = applyBattleOutcome(BattleOutcome.DEFENDER_KILLED_1, att, def);
+      const { attacker, defender } = applyBattleOutcome(
+        BattleOutcome.DEFENDER_KILLED_1,
+        att,
+        def,
+      );
       expect(attacker.troops).toBe(5);
       expect(defender.troops).toBe(2);
     });
@@ -81,7 +90,11 @@ describe('attackLogic', () => {
     it('removes 1 attacker troop for ATTACKER_KILLED_1', () => {
       const att = makeCountry(1, 0, 5);
       const def = makeCountry(2, 1, 3);
-      const { attacker, defender } = applyBattleOutcome(BattleOutcome.ATTACKER_KILLED_1, att, def);
+      const { attacker, defender } = applyBattleOutcome(
+        BattleOutcome.ATTACKER_KILLED_1,
+        att,
+        def,
+      );
       expect(attacker.troops).toBe(4);
       expect(defender.troops).toBe(3);
     });
@@ -89,7 +102,11 @@ describe('attackLogic', () => {
     it('removes 1 each for ONE_EACH', () => {
       const att = makeCountry(1, 0, 5);
       const def = makeCountry(2, 1, 3);
-      const { attacker, defender } = applyBattleOutcome(BattleOutcome.ONE_EACH, att, def);
+      const { attacker, defender } = applyBattleOutcome(
+        BattleOutcome.ONE_EACH,
+        att,
+        def,
+      );
       expect(attacker.troops).toBe(4);
       expect(defender.troops).toBe(2);
     });

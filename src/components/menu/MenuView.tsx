@@ -3,7 +3,12 @@ import { useGameStore } from '../../store/gameStore';
 import { PlayerColor } from '../../types';
 import type { PlayerConfig } from '../../types';
 
-const COLORS: PlayerColor[] = [PlayerColor.RED, PlayerColor.GREEN, PlayerColor.YELLOW, PlayerColor.BLUE];
+const COLORS: PlayerColor[] = [
+  PlayerColor.RED,
+  PlayerColor.GREEN,
+  PlayerColor.YELLOW,
+  PlayerColor.BLUE,
+];
 const COLOR_CSS: Record<PlayerColor, string> = {
   [PlayerColor.RED]: '#ff0000',
   [PlayerColor.GREEN]: '#00ff00',
@@ -12,8 +17,8 @@ const COLOR_CSS: Record<PlayerColor, string> = {
 };
 
 export function MenuView() {
-  const startGame = useGameStore(s => s.startGame);
-  const setScreen = useGameStore(s => s.setScreen);
+  const startGame = useGameStore((s) => s.startGame);
+  const setScreen = useGameStore((s) => s.setScreen);
   const [showOptions, setShowOptions] = useState(false);
   const [numPlayers, setNumPlayers] = useState(2);
   const [names, setNames] = useState(['', '', '', '']);
@@ -34,7 +39,7 @@ export function MenuView() {
   };
 
   const setName = (index: number, value: string) => {
-    setNames(prev => {
+    setNames((prev) => {
       const next = [...prev];
       next[index] = value;
       return next;
@@ -43,46 +48,71 @@ export function MenuView() {
 
   if (!showOptions) {
     return (
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        background: '#000',
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
+          background: '#000',
+        }}
+      >
         <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-          <img src="/resources/startHorse.jpg" alt="" style={{ maxHeight: 500 }} />
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+          <img
+            src="/resources/startHorse.jpg"
+            alt=""
+            style={{ maxHeight: 500 }}
+          />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 10,
+            }}
+          >
             <img src="/resources/ChalmeRiskHeading.gif" alt="ChalmeRisk" />
-            <button onClick={() => setShowOptions(true)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+            <button
+              onClick={() => setShowOptions(true)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+            >
               <img src="/resources/startGame.gif" alt="Start Game" />
             </button>
-            <button onClick={() => setScreen('tutorial')} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+            <button
+              onClick={() => setScreen('tutorial')}
+              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+            >
               <img src="/resources/tutorial.gif" alt="Tutorial" />
             </button>
           </div>
-          <img src="/resources/startInf.jpg" alt="" style={{ maxHeight: 500 }} />
+          <img
+            src="/resources/startInf.jpg"
+            alt=""
+            style={{ maxHeight: 500 }}
+          />
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100vh',
-      background: '#000',
-      color: '#fff',
-      gap: 15,
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+        background: '#000',
+        color: '#fff',
+        gap: 15,
+      }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <label>How many players?</label>
         <select
           value={numPlayers}
-          onChange={e => setNumPlayers(Number(e.target.value))}
+          onChange={(e) => setNumPlayers(Number(e.target.value))}
           style={{ padding: '4px 8px' }}
         >
           <option value={2}>2</option>
@@ -91,7 +121,7 @@ export function MenuView() {
         </select>
       </div>
 
-      {[0, 1, 2, 3].map(i => (
+      {[0, 1, 2, 3].map((i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <label style={{ color: COLOR_CSS[COLORS[i]], width: 180 }}>
             Name of player {i + 1}:
@@ -99,7 +129,7 @@ export function MenuView() {
           <input
             type="text"
             value={names[i]}
-            onChange={e => setName(i, e.target.value)}
+            onChange={(e) => setName(i, e.target.value)}
             disabled={i >= numPlayers}
             style={{ padding: '4px 8px', width: 240 }}
           />
@@ -107,10 +137,16 @@ export function MenuView() {
       ))}
 
       <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
-        <button onClick={() => setShowOptions(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+        <button
+          onClick={() => setShowOptions(false)}
+          style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+        >
           <img src="/resources/backButton.gif" alt="Back" />
         </button>
-        <button onClick={handleStart} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+        <button
+          onClick={handleStart}
+          style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+        >
           <img src="/resources/startButton.gif" alt="Start" />
         </button>
       </div>

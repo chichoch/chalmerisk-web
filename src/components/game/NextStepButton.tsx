@@ -2,12 +2,12 @@ import { useGameStore } from '../../store/gameStore';
 import { TurnPhase } from '../../types';
 
 export function NextStepButton() {
-  const nextStep = useGameStore(s => s.nextStep);
-  const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
-  const players = useGameStore(s => s.players);
-  const turnPhase = useGameStore(s => s.turnPhase);
-  const isFirstRound = useGameStore(s => s.isFirstRound);
-  const winner = useGameStore(s => s.winner);
+  const nextStep = useGameStore((s) => s.nextStep);
+  const currentPlayerIndex = useGameStore((s) => s.currentPlayerIndex);
+  const players = useGameStore((s) => s.players);
+  const turnPhase = useGameStore((s) => s.turnPhase);
+  const isFirstRound = useGameStore((s) => s.isFirstRound);
+  const winner = useGameStore((s) => s.winner);
 
   const player = players[currentPlayerIndex];
   if (!player || winner) return null;
@@ -19,8 +19,8 @@ export function NextStepButton() {
   const label = isFirstRound
     ? 'Next Player'
     : turnPhase === TurnPhase.MOVEMENT
-    ? 'End Turn'
-    : 'Next Step';
+      ? 'End Turn'
+      : 'Next Step';
 
   return (
     <button

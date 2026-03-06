@@ -1,9 +1,5 @@
 import { create } from 'zustand';
-import {
-  TurnPhase,
-  MessageType,
-  BattleOutcome,
-} from '../types';
+import { TurnPhase, MessageType, BattleOutcome } from '../types';
 import type {
   Country,
   Continent,
@@ -73,17 +69,17 @@ interface GameState {
 }
 
 function getCountry(countries: Country[], id: number): Country | undefined {
-  return countries.find(c => c.id === id);
+  return countries.find((c) => c.id === id);
 }
 
 function updateCountry(countries: Country[], updated: Country): Country[] {
-  return countries.map(c => (c.id === updated.id ? updated : c));
+  return countries.map((c) => (c.id === updated.id ? updated : c));
 }
 
 function getActivePlayers(players: Player[], countries: Country[]): number[] {
   const active: number[] = [];
   for (let i = 0; i < players.length; i++) {
-    if (countries.some(c => c.ownerIndex === i)) {
+    if (countries.some((c) => c.ownerIndex === i)) {
       active.push(i);
     }
   }
@@ -93,7 +89,7 @@ function getActivePlayers(players: Player[], countries: Country[]): number[] {
 function getNextActivePlayer(
   currentIndex: number,
   players: Player[],
-  countries: Country[]
+  countries: Country[],
 ): number {
   const active = getActivePlayers(players, countries);
   if (active.length === 0) return currentIndex;
@@ -144,15 +140,18 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   startGame: async (playerConfigs, mapName) => {
     const mapData = await parseMap(`/maps/${mapName}.txt`);
-    const players: Player[] = playerConfigs.map(pc => ({
+    const players: Player[] = playerConfigs.map((pc) => ({
       name: pc.name,
       color: pc.color,
       reinforcements: 0,
     }));
 
-    const assignedCountries = randomizeCountries(players.length, mapData.countries);
+    const assignedCountries = randomizeCountries(
+      players.length,
+      mapData.countries,
+    );
     const reinforcements = calculateFirstRoundReinforcements(players.length);
-    const playersWithReinforcements = players.map(p => ({
+    const playersWithReinforcements = players.map((p) => ({
       ...p,
       reinforcements,
     }));
@@ -196,7 +195,11 @@ export const useGameStore = create<GameState>((set, get) => ({
 
     if (state.isFirstRound) {
       // First round: just reinforcement, then next player
-      const nextPlayer = getNextActivePlayer(state.currentPlayerIndex, state.players, state.countries);
+      const nextPlayer = getNextActivePlayer(
+        state.currentPlayerIndex,
+        state.players,
+        state.countries,
+      );
       const newCount = state.firstRoundCount + 1;
       const totalFirstRounds = state.players.length * 3;
       const endingFirstRound = newCount >= totalFirstRounds;
@@ -206,10 +209,10 @@ export const useGameStore = create<GameState>((set, get) => ({
         const reinforcements = calculateReinforcements(
           nextPlayer,
           state.countries,
-          state.continents
+          state.continents,
         );
         const updatedPlayers = state.players.map((p, i) =>
-          i === nextPlayer ? { ...p, reinforcements } : p
+          i === nextPlayer ? { ...p, reinforcements } : p,
         );
         set({
           currentPlayerIndex: nextPlayer,
@@ -226,9 +229,13 @@ export const useGameStore = create<GameState>((set, get) => ({
         });
       } else {
         // Still in first rounds
-        const firstRoundReinforcements = calculateFirstRoundReinforcements(state.players.length);
+        const firstRoundReinforcements = calculateFirstRoundReinforcements(
+          state.players.length,
+        );
         const updatedPlayers = state.players.map((p, i) =>
-          i === nextPlayer ? { ...p, reinforcements: firstRoundReinforcements } : p
+          i === nextPlayer
+            ? { ...p, reinforcements: firstRoundReinforcements }
+            : p,
         );
         set({
           currentPlayerIndex: nextPlayer,
@@ -246,7 +253,10 @@ export const useGameStore = create<GameState>((set, get) => ({
         set({
           turnPhase: TurnPhase.ATTACK,
           attackState: { ...initialAttackState },
-          message: { text: 'You are now in the attack state.', type: MessageType.INFO },
+          message: {
+            text: 'You are now in the attack state.',
+            type: MessageType.INFO,
+          },
         });
       } else if (state.turnPhase === TurnPhase.ATTACK) {
         // Check game over
@@ -258,18 +268,25 @@ export const useGameStore = create<GameState>((set, get) => ({
         set({
           turnPhase: TurnPhase.MOVEMENT,
           movementState: { ...initialMovementState },
-          message: { text: 'You are now in the troop movement state.', type: MessageType.INFO },
+          message: {
+            text: 'You are now in the troop movement state.',
+            type: MessageType.INFO,
+          },
         });
       } else if (state.turnPhase === TurnPhase.MOVEMENT) {
         // End turn, next player
-        const nextPlayer = getNextActivePlayer(state.currentPlayerIndex, state.players, state.countries);
+        const nextPlayer = getNextActivePlayer(
+          state.currentPlayerIndex,
+          state.players,
+          state.countries,
+        );
         const reinforcements = calculateReinforcements(
           nextPlayer,
           state.countries,
-          state.continents
+          state.continents,
         );
         const updatedPlayers = state.players.map((p, i) =>
-          i === nextPlayer ? { ...p, reinforcements } : p
+          i === nextPlayer ? { ...p, reinforcements } : p,
         );
         set({
           currentPlayerIndex: nextPlayer,
@@ -289,7 +306,11 @@ export const useGameStore = create<GameState>((set, get) => ({
   fight: () => {
     const state = get();
     const { attackState, countries } = state;
-    if (attackState.selectedAttacker === null || attackState.selectedDefender === null) return;
+    if (
+      attackState.selectedAttacker === null ||
+      attackState.selectedDefender === null
+    )
+      return;
 
     const attacker = getCountry(countries, attackState.selectedAttacker)!;
     const defender = getCountry(countries, attackState.selectedDefender)!;
@@ -298,16 +319,26 @@ export const useGameStore = create<GameState>((set, get) => ({
     const { attacker: newAtt, defender: newDef } = applyBattleOutcome(
       battleResult.outcome,
       attacker,
-      defender
+      defender,
     );
 
     let statusText = '';
     switch (battleResult.outcome) {
-      case BattleOutcome.DEFENDER_KILLED_1: statusText = 'Attacker killed 1'; break;
-      case BattleOutcome.ATTACKER_KILLED_1: statusText = 'Defender killed 1'; break;
-      case BattleOutcome.DEFENDER_KILLED_2: statusText = 'Attacker killed 2'; break;
-      case BattleOutcome.ATTACKER_KILLED_2: statusText = 'Defender killed 2'; break;
-      case BattleOutcome.ONE_EACH: statusText = '1 of each killed'; break;
+      case BattleOutcome.DEFENDER_KILLED_1:
+        statusText = 'Attacker killed 1';
+        break;
+      case BattleOutcome.ATTACKER_KILLED_1:
+        statusText = 'Defender killed 1';
+        break;
+      case BattleOutcome.DEFENDER_KILLED_2:
+        statusText = 'Attacker killed 2';
+        break;
+      case BattleOutcome.ATTACKER_KILLED_2:
+        statusText = 'Defender killed 2';
+        break;
+      case BattleOutcome.ONE_EACH:
+        statusText = '1 of each killed';
+        break;
     }
 
     let result: 'fighting' | 'attacker_won' | 'defender_won' = 'fighting';
@@ -342,12 +373,19 @@ export const useGameStore = create<GameState>((set, get) => ({
   endFight: () => {
     const state = get();
     const { attackState, countries } = state;
-    if (attackState.selectedAttacker === null || attackState.selectedDefender === null) return;
+    if (
+      attackState.selectedAttacker === null ||
+      attackState.selectedDefender === null
+    )
+      return;
 
     if (attackState.takeOverCountry) {
       const attacker = getCountry(countries, attackState.selectedAttacker)!;
       const defender = getCountry(countries, attackState.selectedDefender)!;
-      const { attacker: newAtt, defender: newDef } = applyTakeover(attacker, defender);
+      const { attacker: newAtt, defender: newDef } = applyTakeover(
+        attacker,
+        defender,
+      );
 
       let updatedCountries = updateCountry(countries, newAtt);
       updatedCountries = updateCountry(updatedCountries, newDef);
@@ -385,7 +423,11 @@ export const useGameStore = create<GameState>((set, get) => ({
   moveTroops: (count) => {
     const state = get();
     const { movementState, countries } = state;
-    if (movementState.selectedFrom === null || movementState.selectedTo === null) return;
+    if (
+      movementState.selectedFrom === null ||
+      movementState.selectedTo === null
+    )
+      return;
 
     const from = getCountry(countries, movementState.selectedFrom)!;
     const to = getCountry(countries, movementState.selectedTo)!;
@@ -400,7 +442,10 @@ export const useGameStore = create<GameState>((set, get) => ({
         selectedFrom: null,
         selectedTo: null,
         isDialogOpen: false,
-        movementUsedThisTurn: state.turnPhase === TurnPhase.MOVEMENT ? true : state.movementState.movementUsedThisTurn,
+        movementUsedThisTurn:
+          state.turnPhase === TurnPhase.MOVEMENT
+            ? true
+            : state.movementState.movementUsedThisTurn,
       },
     });
   },
@@ -438,19 +483,29 @@ export const useGameStore = create<GameState>((set, get) => ({
 function handleReinforcementClick(
   countryId: number,
   state: GameState,
-  set: (partial: Partial<GameState>) => void
+  set: (partial: Partial<GameState>) => void,
 ) {
   const country = getCountry(state.countries, countryId);
   if (!country) return;
 
   if (country.ownerIndex !== state.currentPlayerIndex) {
-    set({ message: { text: 'You can only place reinforcements in your countries', type: MessageType.WARNING } });
+    set({
+      message: {
+        text: 'You can only place reinforcements in your countries',
+        type: MessageType.WARNING,
+      },
+    });
     return;
   }
 
   const currentPlayer = state.players[state.currentPlayerIndex];
   if (currentPlayer.reinforcements <= 0) {
-    set({ message: { text: "You don't have any more reinforcements", type: MessageType.WARNING } });
+    set({
+      message: {
+        text: "You don't have any more reinforcements",
+        type: MessageType.WARNING,
+      },
+    });
     return;
   }
 
@@ -459,39 +514,51 @@ function handleReinforcementClick(
   const updatedPlayers = state.players.map((p, i) =>
     i === state.currentPlayerIndex
       ? { ...p, reinforcements: p.reinforcements - 1 }
-      : p
+      : p,
   );
 
   set({
     countries: updatedCountries,
     players: updatedPlayers,
-    message: { text: 'You have placed one reinforcement in the selected country', type: MessageType.SUCCESS },
+    message: {
+      text: 'You have placed one reinforcement in the selected country',
+      type: MessageType.SUCCESS,
+    },
   });
 }
 
 function handleAttackClick(
   countryId: number,
   state: GameState,
-  set: (partial: Partial<GameState>) => void
+  set: (partial: Partial<GameState>) => void,
 ) {
   const { attackState, countries, currentPlayerIndex } = state;
 
   if (attackState.selectedAttacker === null) {
     // First click: select attacker
-    const validation = validateAttacker(countryId, currentPlayerIndex, countries);
+    const validation = validateAttacker(
+      countryId,
+      currentPlayerIndex,
+      countries,
+    );
     if (!validation.valid) {
-      set({ message: { text: validation.message!, type: MessageType.WARNING } });
+      set({
+        message: { text: validation.message!, type: MessageType.WARNING },
+      });
       return;
     }
 
-    const updatedCountries = countries.map(c =>
-      c.id === countryId ? { ...c, isSelected: true } : c
+    const updatedCountries = countries.map((c) =>
+      c.id === countryId ? { ...c, isSelected: true } : c,
     );
 
     set({
       countries: updatedCountries,
       attackState: { ...attackState, selectedAttacker: countryId },
-      message: { text: 'You have selected the country to attack from', type: MessageType.SUCCESS },
+      message: {
+        text: 'You have selected the country to attack from',
+        type: MessageType.SUCCESS,
+      },
     });
   } else {
     // Second click: select defender
@@ -502,8 +569,10 @@ function handleAttackClick(
       // Deselect attacker if clicking own country
       const defender = getCountry(countries, countryId);
       if (defender && defender.ownerIndex === attacker.ownerIndex) {
-        const updatedCountries = countries.map(c =>
-          c.id === attackState.selectedAttacker ? { ...c, isSelected: false } : c
+        const updatedCountries = countries.map((c) =>
+          c.id === attackState.selectedAttacker
+            ? { ...c, isSelected: false }
+            : c,
         );
         set({
           countries: updatedCountries,
@@ -511,14 +580,16 @@ function handleAttackClick(
           message: { text: validation.message!, type: MessageType.WARNING },
         });
       } else {
-        set({ message: { text: validation.message!, type: MessageType.WARNING } });
+        set({
+          message: { text: validation.message!, type: MessageType.WARNING },
+        });
       }
       return;
     }
 
     // Valid defender — open attack dialog
-    const updatedCountries = countries.map(c =>
-      c.id === attackState.selectedAttacker ? { ...c, isSelected: false } : c
+    const updatedCountries = countries.map((c) =>
+      c.id === attackState.selectedAttacker ? { ...c, isSelected: false } : c,
     );
 
     set({
@@ -537,7 +608,7 @@ function handleAttackClick(
 function handleMovementClick(
   countryId: number,
   state: GameState,
-  set: (partial: Partial<GameState>) => void
+  set: (partial: Partial<GameState>) => void,
 ) {
   const { movementState, countries, currentPlayerIndex } = state;
 
@@ -546,22 +617,35 @@ function handleMovementClick(
     if (!country) return;
 
     if (country.ownerIndex !== currentPlayerIndex) {
-      set({ message: { text: 'You can only move troops from your own country', type: MessageType.WARNING } });
+      set({
+        message: {
+          text: 'You can only move troops from your own country',
+          type: MessageType.WARNING,
+        },
+      });
       return;
     }
     if (country.troops <= 1) {
-      set({ message: { text: 'There are not enough troops for a troop movement', type: MessageType.WARNING } });
+      set({
+        message: {
+          text: 'There are not enough troops for a troop movement',
+          type: MessageType.WARNING,
+        },
+      });
       return;
     }
 
-    const updatedCountries = countries.map(c =>
-      c.id === countryId ? { ...c, isSelected: true } : c
+    const updatedCountries = countries.map((c) =>
+      c.id === countryId ? { ...c, isSelected: true } : c,
     );
 
     set({
       countries: updatedCountries,
       movementState: { ...movementState, selectedFrom: countryId },
-      message: { text: 'You have marked the country to move troops from', type: MessageType.SUCCESS },
+      message: {
+        text: 'You have marked the country to move troops from',
+        type: MessageType.SUCCESS,
+      },
     });
   } else {
     const fromCountry = getCountry(countries, movementState.selectedFrom)!;
@@ -569,26 +653,39 @@ function handleMovementClick(
     if (!toCountry) return;
 
     if (toCountry.ownerIndex !== fromCountry.ownerIndex) {
-      const updatedCountries = countries.map(c =>
-        c.id === movementState.selectedFrom ? { ...c, isSelected: false } : c
+      const updatedCountries = countries.map((c) =>
+        c.id === movementState.selectedFrom ? { ...c, isSelected: false } : c,
       );
       set({
         countries: updatedCountries,
         movementState: { ...movementState, selectedFrom: null },
-        message: { text: 'You can only move troops between your own countries', type: MessageType.WARNING },
+        message: {
+          text: 'You can only move troops between your own countries',
+          type: MessageType.WARNING,
+        },
       });
       return;
     }
 
     if (!fromCountry.neighbours.includes(countryId)) {
-      set({ message: { text: 'You can only move troops to a neighbouring country', type: MessageType.WARNING } });
+      set({
+        message: {
+          text: 'You can only move troops to a neighbouring country',
+          type: MessageType.WARNING,
+        },
+      });
       return;
     }
 
     if (movementState.movementUsedThisTurn) {
-      set({ message: { text: 'You can only move troops once every turn', type: MessageType.WARNING } });
-      const updatedCountries = countries.map(c =>
-        c.id === movementState.selectedFrom ? { ...c, isSelected: false } : c
+      set({
+        message: {
+          text: 'You can only move troops once every turn',
+          type: MessageType.WARNING,
+        },
+      });
+      const updatedCountries = countries.map((c) =>
+        c.id === movementState.selectedFrom ? { ...c, isSelected: false } : c,
       );
       set({
         countries: updatedCountries,
@@ -598,8 +695,8 @@ function handleMovementClick(
     }
 
     // Deselect and open movement dialog
-    const updatedCountries = countries.map(c =>
-      c.id === movementState.selectedFrom ? { ...c, isSelected: false } : c
+    const updatedCountries = countries.map((c) =>
+      c.id === movementState.selectedFrom ? { ...c, isSelected: false } : c,
     );
 
     set({

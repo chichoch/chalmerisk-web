@@ -9,10 +9,10 @@ const COLOR_MAP: Record<PlayerColor, string> = {
 };
 
 export function PhaseIndicator() {
-  const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
-  const players = useGameStore(s => s.players);
-  const turnPhase = useGameStore(s => s.turnPhase);
-  const isFirstRound = useGameStore(s => s.isFirstRound);
+  const currentPlayerIndex = useGameStore((s) => s.currentPlayerIndex);
+  const players = useGameStore((s) => s.players);
+  const turnPhase = useGameStore((s) => s.turnPhase);
+  const isFirstRound = useGameStore((s) => s.isFirstRound);
 
   const player = players[currentPlayerIndex];
   if (!player) return null;

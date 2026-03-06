@@ -3,8 +3,8 @@ import type { Country, Continent, MapData } from '../types';
 function stripLines(text: string): string[] {
   return text
     .split('\n')
-    .map(line => line.trim())
-    .filter(line => line.length > 0 && !line.startsWith('#'));
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0 && !line.startsWith('#'));
 }
 
 export async function parseMap(url: string): Promise<MapData> {
@@ -30,7 +30,9 @@ export async function parseMap(url: string): Promise<MapData> {
           const id = parseInt(lines[i + 2], 10);
           const x = parseInt(lines[i + 3], 10);
           const y = parseInt(lines[i + 4], 10);
-          const neighbours = lines[i + 5].split(/\s+/).map(n => parseInt(n, 10));
+          const neighbours = lines[i + 5]
+            .split(/\s+/)
+            .map((n) => parseInt(n, 10));
 
           countries.push({
             id,
@@ -84,7 +86,9 @@ export function parseMapFromText(text: string): MapData {
           const id = parseInt(lines[i + 2], 10);
           const x = parseInt(lines[i + 3], 10);
           const y = parseInt(lines[i + 4], 10);
-          const neighbours = lines[i + 5].split(/\s+/).map(n => parseInt(n, 10));
+          const neighbours = lines[i + 5]
+            .split(/\s+/)
+            .map((n) => parseInt(n, 10));
 
           countries.push({
             id,

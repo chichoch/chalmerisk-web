@@ -1,6 +1,10 @@
 import { PlayerColor, getTroopType } from '../types';
 
-export function getIconPath(color: PlayerColor, troops: number, selected: boolean): string {
+export function getIconPath(
+  color: PlayerColor,
+  troops: number,
+  selected: boolean,
+): string {
   const troopType = getTroopType(troops);
   const selectedSuffix = selected ? 'Selected' : '';
 

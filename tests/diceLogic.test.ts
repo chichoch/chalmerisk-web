@@ -66,7 +66,10 @@ describe('diceLogic', () => {
     it('only kills 1 when only 1 die each', () => {
       for (let i = 0; i < 50; i++) {
         const result = resolveBattle(2, 1);
-        expect([BattleOutcome.DEFENDER_KILLED_1, BattleOutcome.ATTACKER_KILLED_1]).toContain(result.outcome);
+        expect([
+          BattleOutcome.DEFENDER_KILLED_1,
+          BattleOutcome.ATTACKER_KILLED_1,
+        ]).toContain(result.outcome);
       }
     });
   });

@@ -5,25 +5,45 @@ export function rollDice(): number {
   return Math.floor(Math.random() * 6) + 1;
 }
 
-function getDiceCounts(attackingTroops: number, defendingTroops: number): { attDice: number; defDice: number } {
+function getDiceCounts(
+  attackingTroops: number,
+  defendingTroops: number,
+): { attDice: number; defDice: number } {
   let attDice: number;
   let defDice: number;
 
   if (defendingTroops === 1) {
-    if (attackingTroops > 3) { attDice = 3; defDice = 1; }
-    else if (attackingTroops === 3) { attDice = 2; defDice = 1; }
-    else { attDice = 1; defDice = 1; }
+    if (attackingTroops > 3) {
+      attDice = 3;
+      defDice = 1;
+    } else if (attackingTroops === 3) {
+      attDice = 2;
+      defDice = 1;
+    } else {
+      attDice = 1;
+      defDice = 1;
+    }
   } else {
     // defendingTroops >= 2
-    if (attackingTroops > 3) { attDice = 3; defDice = 2; }
-    else if (attackingTroops === 3) { attDice = 2; defDice = 2; }
-    else { attDice = 1; defDice = 2; }
+    if (attackingTroops > 3) {
+      attDice = 3;
+      defDice = 2;
+    } else if (attackingTroops === 3) {
+      attDice = 2;
+      defDice = 2;
+    } else {
+      attDice = 1;
+      defDice = 2;
+    }
   }
 
   return { attDice, defDice };
 }
 
-export function resolveBattle(attackingTroops: number, defendingTroops: number): BattleResult {
+export function resolveBattle(
+  attackingTroops: number,
+  defendingTroops: number,
+): BattleResult {
   const { attDice, defDice } = getDiceCounts(attackingTroops, defendingTroops);
 
   // Roll all dice
@@ -51,7 +71,7 @@ function battle(
   attNumberOfDice: number,
   defNumberOfDice: number,
   attDiceValues: number[],
-  defDiceValues: number[]
+  defDiceValues: number[],
 ): BattleOutcome {
   const [a1, a2, a3] = attDiceValues;
   const [d1, d2] = defDiceValues;
@@ -66,13 +86,17 @@ function battle(
     } else {
       attMax = a1;
     }
-    return attMax > d1 ? BattleOutcome.DEFENDER_KILLED_1 : BattleOutcome.ATTACKER_KILLED_1;
+    return attMax > d1
+      ? BattleOutcome.DEFENDER_KILLED_1
+      : BattleOutcome.ATTACKER_KILLED_1;
   }
 
   // Cases with 2 defender dice
   if (attNumberOfDice === 1) {
     const defMax = Math.max(d1, d2);
-    return a1 > defMax ? BattleOutcome.DEFENDER_KILLED_1 : BattleOutcome.ATTACKER_KILLED_1;
+    return a1 > defMax
+      ? BattleOutcome.DEFENDER_KILLED_1
+      : BattleOutcome.ATTACKER_KILLED_1;
   }
 
   // 2 or 3 attacker dice vs 2 defender dice — compare top two

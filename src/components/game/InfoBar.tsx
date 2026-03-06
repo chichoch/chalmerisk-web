@@ -8,17 +8,19 @@ const TYPE_COLORS: Record<MessageType, string> = {
 };
 
 export function InfoBar() {
-  const message = useGameStore(s => s.message);
+  const message = useGameStore((s) => s.message);
 
   if (!message) return <div style={{ flex: 1 }} />;
 
   return (
-    <div style={{
-      flex: 1,
-      color: TYPE_COLORS[message.type],
-      fontSize: 14,
-      textAlign: 'center',
-    }}>
+    <div
+      style={{
+        flex: 1,
+        color: TYPE_COLORS[message.type],
+        fontSize: 14,
+        textAlign: 'center',
+      }}
+    >
       {message.text}
     </div>
   );

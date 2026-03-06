@@ -4,7 +4,7 @@ import { GameBoard } from './components/game/GameBoard';
 import { TutorialView } from './components/tutorial/TutorialView';
 
 function App() {
-  const screen = useGameStore(s => s.screen);
+  const screen = useGameStore((s) => s.screen);
 
   switch (screen) {
     case 'menu':

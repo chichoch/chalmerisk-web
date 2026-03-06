@@ -10,54 +10,67 @@ import { MovementDialog } from '../dialogs/MovementDialog';
 import { GameOverDialog } from '../dialogs/GameOverDialog';
 
 export function GameBoard() {
-  const countries = useGameStore(s => s.countries);
-  const mapBackgroundImage = useGameStore(s => s.mapBackgroundImage);
+  const countries = useGameStore((s) => s.countries);
+  const mapBackgroundImage = useGameStore((s) => s.mapBackgroundImage);
 
   return (
-    <div style={{ background: '#000', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '5px 20px',
+    <div
+      style={{
         background: '#000',
-      }}>
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <div
+        style={{
+          width: 1360,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '5px 0',
+        }}
+      >
         <PlayerIndicator />
         <PhaseIndicator />
         <div style={{ width: 200 }} />
       </div>
 
-      <div style={{
-        position: 'relative',
-        flex: 1,
-        overflow: 'hidden',
-      }}>
+      <div
+        style={{
+          position: 'relative',
+          width: 1360,
+          height: 650,
+          overflow: 'hidden',
+        }}
+      >
         <img
           src={`/${mapBackgroundImage}`}
           alt="Map"
           style={{
             position: 'absolute',
-            left: -18,
-            top: -72,
-            width: 1400,
-            height: 800,
+            width: 1360,
+            height: 650,
           }}
           draggable={false}
         />
-        {countries.map(country => (
+        {countries.map((country) => (
           <CountryView key={country.id} countryId={country.id} />
         ))}
         <ReinforcementCursor />
       </div>
 
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 20,
-        padding: '8px 20px',
-        background: '#000',
-      }}>
+      <div
+        style={{
+          width: 1360,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 20,
+          padding: '8px 0',
+        }}
+      >
         <InfoBar />
         <NextStepButton />
       </div>

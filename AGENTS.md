@@ -20,6 +20,11 @@ ChalmeRisk Web is a browser-based Risk-style board game, migrated from a Java Sw
 - `yarn build` — Type-check and build (`tsc -b && vite build`)
 - `yarn test` — Run tests (`vitest run`)
 - `yarn lint` — Lint with ESLint
+- `yarn format` — Format all source files with Prettier
+
+## Formatting
+
+After every file edit, run `npx prettier --write <file>` on the changed file to ensure consistent formatting.
 
 ## Architecture
 
