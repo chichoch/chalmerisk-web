@@ -104,7 +104,8 @@ export function AttackDialog() {
         style={{
           background: '#ddd',
           border: '2px solid #000',
-          width: 420,
+          maxWidth: 420,
+          width: '90vw',
           padding: 10,
         }}
       >

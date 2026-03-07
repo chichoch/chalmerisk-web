@@ -1,4 +1,5 @@
 import { useGameStore } from '../../store/gameStore';
+import { useMapScale } from '../../hooks/useMapScale';
 import { CountryView } from './CountryView';
 import { InfoBar } from './InfoBar';
 import { PlayerIndicator } from './PlayerIndicator';
@@ -12,6 +13,7 @@ import { GameOverDialog } from '../dialogs/GameOverDialog';
 export function GameBoard() {
   const countries = useGameStore((s) => s.countries);
   const mapBackgroundImage = useGameStore((s) => s.mapBackgroundImage);
+  const { scale } = useMapScale();
 
   return (
     <div
@@ -21,11 +23,13 @@ export function GameBoard() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        touchAction: 'manipulation',
       }}
     >
       <div
         style={{
-          width: 1360,
+          width: '100%',
+          maxWidth: 1360,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -39,31 +43,42 @@ export function GameBoard() {
 
       <div
         style={{
-          position: 'relative',
-          width: 1360,
-          height: 650,
+          width: '100%',
+          maxWidth: 1360,
+          height: 650 * scale,
           overflow: 'hidden',
         }}
       >
-        <img
-          src={`/${mapBackgroundImage}`}
-          alt="Map"
+        <div
           style={{
-            position: 'absolute',
+            position: 'relative',
             width: 1360,
             height: 650,
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left',
           }}
-          draggable={false}
-        />
-        {countries.map((country) => (
-          <CountryView key={country.id} countryId={country.id} />
-        ))}
-        <ReinforcementCursor />
+        >
+          <img
+            src={`/${mapBackgroundImage}`}
+            alt="Map"
+            style={{
+              position: 'absolute',
+              width: 1360,
+              height: 650,
+            }}
+            draggable={false}
+          />
+          {countries.map((country) => (
+            <CountryView key={country.id} countryId={country.id} />
+          ))}
+          <ReinforcementCursor />
+        </div>
       </div>
 
       <div
         style={{
-          width: 1360,
+          width: '100%',
+          maxWidth: 1360,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

@@ -37,7 +37,8 @@ export function MovementDialog() {
           background: '#ddd',
           border: '2px solid #000',
           padding: 20,
-          width: 320,
+          maxWidth: 320,
+          width: '90vw',
         }}
       >
         <div
