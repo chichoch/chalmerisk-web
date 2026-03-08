@@ -24,7 +24,11 @@ export function TutorialView() {
           marginBottom: 10,
         }}
       >
-        <img src="/resources/backBig.gif" alt="Back" />
+        <img
+          src="/resources/backBig.gif"
+          alt="Back"
+          style={{ maxWidth: '100%' }}
+        />
       </button>
       <div
         style={{
@@ -34,14 +38,46 @@ export function TutorialView() {
           alignItems: 'center',
         }}
       >
-        <img src="/resources/tutorialheading.gif" alt="Tutorial" />
-        <img src="/resources/tutorial1.gif" alt="Tutorial 1" />
-        <img src="/resources/tutorialspace.gif" alt="" />
-        <img src="/resources/tutorial2.gif" alt="Tutorial 2" />
-        <img src="/resources/tutorialspace.gif" alt="" />
-        <img src="/resources/tutorial3.gif" alt="Tutorial 3" />
-        <img src="/resources/tutorialspace.gif" alt="" />
-        <img src="/resources/tutorial4.gif" alt="Tutorial 4" />
+        <img
+          src="/resources/tutorialheading.gif"
+          alt="Tutorial"
+          style={{ maxWidth: '100%' }}
+        />
+        <img
+          src="/resources/tutorial1.gif"
+          alt="Tutorial 1"
+          style={{ maxWidth: '100%' }}
+        />
+        <img
+          src="/resources/tutorialspace.gif"
+          alt=""
+          style={{ maxWidth: '100%' }}
+        />
+        <img
+          src="/resources/tutorial2.gif"
+          alt="Tutorial 2"
+          style={{ maxWidth: '100%' }}
+        />
+        <img
+          src="/resources/tutorialspace.gif"
+          alt=""
+          style={{ maxWidth: '100%' }}
+        />
+        <img
+          src="/resources/tutorial3.gif"
+          alt="Tutorial 3"
+          style={{ maxWidth: '100%' }}
+        />
+        <img
+          src="/resources/tutorialspace.gif"
+          alt=""
+          style={{ maxWidth: '100%' }}
+        />
+        <img
+          src="/resources/tutorial4.gif"
+          alt="Tutorial 4"
+          style={{ maxWidth: '100%' }}
+        />
       </div>
       <button
         onClick={() => setScreen('menu')}
@@ -52,7 +88,11 @@ export function TutorialView() {
           marginTop: 10,
         }}
       >
-        <img src="/resources/backBig.gif" alt="Back" />
+        <img
+          src="/resources/backBig.gif"
+          alt="Back"
+          style={{ maxWidth: '100%' }}
+        />
       </button>
     </div>
   );

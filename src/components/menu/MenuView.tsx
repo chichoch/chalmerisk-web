@@ -57,11 +57,20 @@ export function MenuView() {
           background: '#000',
         }}
       >
-        <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            padding: '0 20px',
+          }}
+        >
           <img
             src="/resources/startHorse.jpg"
             alt=""
-            style={{ maxHeight: 500 }}
+            style={{ maxHeight: 500, maxWidth: '30vw', objectFit: 'contain' }}
           />
           <div
             style={{
@@ -71,7 +80,11 @@ export function MenuView() {
               gap: 10,
             }}
           >
-            <img src="/resources/ChalmeRiskHeading.gif" alt="ChalmeRisk" />
+            <img
+              src="/resources/ChalmeRiskHeading.gif"
+              alt="ChalmeRisk"
+              style={{ maxWidth: '90vw' }}
+            />
             <button
               onClick={() => setShowOptions(true)}
               style={{ background: 'none', border: 'none', cursor: 'pointer' }}
@@ -88,7 +101,7 @@ export function MenuView() {
           <img
             src="/resources/startInf.jpg"
             alt=""
-            style={{ maxHeight: 500 }}
+            style={{ maxHeight: 500, maxWidth: '30vw', objectFit: 'contain' }}
           />
         </div>
       </div>
@@ -106,9 +119,19 @@ export function MenuView() {
         background: '#000',
         color: '#fff',
         gap: 15,
+        padding: '0 20px',
+        boxSizing: 'border-box',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+        }}
+      >
         <label>How many players?</label>
         <select
           value={numPlayers}
@@ -122,8 +145,18 @@ export function MenuView() {
       </div>
 
       {[0, 1, 2, 3].map((i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <label style={{ color: COLOR_CSS[COLORS[i]], width: 180 }}>
+        <div
+          key={i}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            maxWidth: '90vw',
+          }}
+        >
+          <label style={{ color: COLOR_CSS[COLORS[i]], minWidth: 120 }}>
             Name of player {i + 1}:
           </label>
           <input
@@ -131,7 +164,17 @@ export function MenuView() {
             value={names[i]}
             onChange={(e) => setName(i, e.target.value)}
             disabled={i >= numPlayers}
-            style={{ padding: '4px 8px', width: 240 }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' && i + 1 === numPlayers) {
+                handleStart();
+              }
+            }}
+            style={{
+              padding: '4px 8px',
+              maxWidth: 240,
+              width: '100%',
+              boxSizing: 'border-box',
+            }}
           />
         </div>
       ))}
