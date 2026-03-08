@@ -14,7 +14,11 @@ export function PlayerIndicator() {
         fontSize: 18,
         fontWeight: 'bold',
         fontFamily: '"Courier New", monospace',
-        width: 200,
+        width: '100%',
+        maxWidth: 200,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
       }}
     >
       {player.name}'s turn

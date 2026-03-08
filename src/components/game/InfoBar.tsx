@@ -10,15 +10,17 @@ const TYPE_COLORS: Record<MessageType, string> = {
 export function InfoBar() {
   const message = useGameStore((s) => s.message);
 
-  if (!message) return <div style={{ flex: 1 }} />;
+  if (!message) return <div style={{ flex: '1 1 auto', minHeight: 20 }} />;
 
   return (
     <div
       style={{
-        flex: 1,
+        flex: '1 1 auto',
+        maxWidth: 320,
         color: TYPE_COLORS[message.type],
         fontSize: 14,
         textAlign: 'center',
+        lineHeight: 1.3,
       }}
     >
       {message.text}

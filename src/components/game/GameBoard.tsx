@@ -10,86 +10,124 @@ import { AttackDialog } from '../dialogs/AttackDialog';
 import { MovementDialog } from '../dialogs/MovementDialog';
 import { GameOverDialog } from '../dialogs/GameOverDialog';
 
+const MAP_WIDTH = 1360;
+const MAP_HEIGHT = 650;
+
 export function GameBoard() {
   const countries = useGameStore((s) => s.countries);
   const mapBackgroundImage = useGameStore((s) => s.mapBackgroundImage);
-  const { scale } = useMapScale();
+  const { scale, shouldCenterMap } = useMapScale();
 
   return (
     <div
       style={{
         background: '#000',
+        height: '100dvh',
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
         touchAction: 'manipulation',
+        overflow: 'hidden',
       }}
     >
       <div
         style={{
           width: '100%',
-          maxWidth: 1360,
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          justifyContent: 'center',
           padding: '5px 0',
-        }}
-      >
-        <PlayerIndicator />
-        <PhaseIndicator />
-        <div style={{ width: 200 }} />
-      </div>
-
-      <div
-        style={{
-          width: '100%',
-          maxWidth: 1360,
-          height: 650 * scale,
-          overflow: 'hidden',
+          flex: '0 0 auto',
         }}
       >
         <div
           style={{
-            position: 'relative',
-            width: 1360,
-            height: 650,
-            transform: `scale(${scale})`,
-            transformOrigin: 'top left',
+            width: '100%',
+            maxWidth: MAP_WIDTH,
+            display: 'grid',
+            gridTemplateColumns: '1fr auto 1fr',
+            alignItems: 'center',
+            padding: '0 8px',
+            boxSizing: 'border-box',
           }}
         >
-          <img
-            src={`/${mapBackgroundImage}`}
-            alt="Map"
-            style={{
-              position: 'absolute',
-              width: 1360,
-              height: 650,
-            }}
-            draggable={false}
-          />
-          {countries.map((country) => (
-            <CountryView key={country.id} countryId={country.id} />
-          ))}
-          <ReinforcementCursor />
+          <PlayerIndicator />
+          <PhaseIndicator />
+          <div />
         </div>
       </div>
 
       <div
         style={{
           width: '100%',
-          maxWidth: 1360,
+          flex: '0 0 auto',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          WebkitOverflowScrolling: 'touch',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 20,
-          padding: '8px 0',
+          justifyContent: shouldCenterMap ? 'center' : 'flex-start',
         }}
       >
-        <InfoBar />
-        <NextStepButton />
+        <div
+          style={{
+            position: 'relative',
+            width: MAP_WIDTH * scale,
+            height: MAP_HEIGHT * scale,
+            flex: '0 0 auto',
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              width: MAP_WIDTH,
+              height: MAP_HEIGHT,
+              transform: `scale(${scale})`,
+              transformOrigin: 'top left',
+            }}
+          >
+            <img
+              src={`/${mapBackgroundImage}`}
+              alt="Map"
+              style={{
+                position: 'absolute',
+                width: MAP_WIDTH,
+                height: MAP_HEIGHT,
+              }}
+              draggable={false}
+            />
+            {countries.map((country) => (
+              <CountryView key={country.id} countryId={country.id} />
+            ))}
+          </div>
+        </div>
       </div>
 
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '8px 0',
+          flex: '0 0 auto',
+        }}
+      >
+        <div
+          style={{
+            width: '100%',
+            maxWidth: 500,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 12,
+            padding: '0 8px',
+            boxSizing: 'border-box',
+          }}
+        >
+          <InfoBar />
+          <NextStepButton />
+        </div>
+      </div>
+
+      <ReinforcementCursor />
       <AttackDialog />
       <MovementDialog />
       <GameOverDialog />
